@@ -123,7 +123,7 @@ def display_job_card(job):
             st.markdown(f"[Apply Now]({job['job_apply_link']})")
 
 def main():
-    st.title("🎯 Smart Job Matcher")
+    st.title("🎯 JobHunt Ai")
     st.write("Upload your resume and let AI find the perfect job matches for you!")
 
     # File upload
