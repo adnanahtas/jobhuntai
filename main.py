@@ -23,15 +23,21 @@ def extract_text_from_pdf(pdf_file):
     return text
 
 def analyze_resume(resume_text):
-    """Analyze resume using OpenAI API"""
-    openai.api_key = "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"
-
-    system_prompt = """You are a professional resume analyzer. Your task is to analyze resumes and return information in valid JSON format.
-    Always ensure your response is a properly formatted JSON object with the exact structure specified."""
-
-    user_prompt = f"""Analyze this resume and return a JSON object with exactly this structure:
+    """Analyze resume using Gemini API."""
+    import google.generativeai as genai
+    
+    # Configure the API
+    GEMINI_API_KEY = "AIzaSyCa2JbASfiR8nGPT5BV09K9N43H002daEI"
+    genai.configure(api_key=GEMINI_API_KEY)
+    
+    # Initialize the model
+    model = genai.GenerativeModel('gemini-pro')
+    
+    # Define the prompt with explicit instructions to return JSON
+    prompt = f"""You must respond with ONLY a valid JSON object, no other text.
+    Analyze this resume and return a JSON object with exactly this structure:
     {{
-        "Primary job role": "string"(dont add words like student or studying),
+        "Primary job role": "string" (don't add words like student or studying),
         "Key skills": ["string"],
         "Years of experience": "string",
         "Key achievements": ["string"],
@@ -41,15 +47,41 @@ def analyze_resume(resume_text):
     Resume text:
     {resume_text}
     """
-    response = openai.ChatCompletion.create(
-        model="gpt-4-turbo",
-        messages=[
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": user_prompt}
-        ]
-    )
 
-    return json.loads(response.choices[0].message['content'])
+    try:
+        # Generate response
+        response = model.generate_content(prompt)
+        
+        # Debug: Print raw response
+        st.write("Raw API Response:", response.text)
+        
+        # Clean the response text
+        response_text = response.text.strip()
+        
+        # Remove any markdown code block indicators if present
+        if response_text.startswith("```json"):
+            response_text = response_text[7:]
+        if response_text.startswith("```"):
+            response_text = response_text[3:]
+        if response_text.endswith("```"):
+            response_text = response_text[:-3]
+            
+        response_text = response_text.strip()
+        
+        # Debug: Print cleaned response
+        st.write("Cleaned Response:", response_text)
+        
+        # Parse JSON
+        parsed_response = json.loads(response_text)
+        return parsed_response
+
+    except json.JSONDecodeError as e:
+        st.error(f"Error parsing JSON response: {str(e)}")
+        st.write("Failed to parse response:", response_text)
+        return {}
+    except Exception as e:
+        st.error(f"Error calling Gemini API: {str(e)}")
+        return {}
 
 
 def fetch_jobs_rapidapi(job_title, location=None, page=1):
