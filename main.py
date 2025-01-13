@@ -52,8 +52,8 @@ def analyze_resume(resume_text):
         # Generate response
         response = model.generate_content(prompt)
         
-        # Debug: Print raw response
-        st.write("Raw API Response:", response.text)
+        
+        
         
         # Clean the response text
         response_text = response.text.strip()
