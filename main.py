@@ -27,7 +27,7 @@ def analyze_resume(resume_text):
     import google.generativeai as genai
     
     # Configure the API
-    GEMINI_API_KEY = "AIzaSyCa2JbASfiR8nGPT5BV09K9N43H002daEI"
+    GEMINI_API_KEY = "AIzaSyDrrphTG-uU-lI6OhqjJKciXLL7FE7_YNw"
     genai.configure(api_key=GEMINI_API_KEY)
     
     # Initialize the model
