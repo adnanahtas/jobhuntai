@@ -27,11 +27,11 @@ def analyze_resume(resume_text):
     import google.generativeai as genai
     
     # Configure the API
-    GEMINI_API_KEY = "AIzaSyDrrphTG-uU-lI6OhqjJKciXLL7FE7_YNw"
+    GEMINI_API_KEY = "AIzaSyCLYh2Sbw0mouIllJ9gLHTeeJBij3jjCS"
     genai.configure(api_key=GEMINI_API_KEY)
     
     # Initialize the model
-    model = genai.GenerativeModel('models/gemini-1.5-flash')
+    model = genai.GenerativeModel('models/gemini-1.5-pro')
     
     
     # Define the prompt with explicit instructions to return JSON
