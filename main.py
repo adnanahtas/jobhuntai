@@ -31,7 +31,7 @@ def analyze_resume(resume_text):
     genai.configure(api_key=GEMINI_API_KEY)
     
     # Initialize the model
-    model = genai.GenerativeModel('models/gemini-1.5-pro')
+    model = genai.GenerativeModel('models/gemini-2.0-pro')
     
     
     # Define the prompt with explicit instructions to return JSON
